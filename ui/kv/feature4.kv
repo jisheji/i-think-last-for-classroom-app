@@ -1,0 +1,19 @@
+<Feature4_Screen>:
+    name: 'feature4'
+    
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(10)
+        spacing: dp(10)
+        
+        MDLabel:
+            text: "Hello"
+            font_style: 'H6'
+            halign: 'center'
+            valign: 'middle'
+            theme_text_color: 'Primary'
+
+    MDBoxLayout:
+        MDRaisedButton:
+            text: 'Go Back'
+            on_press: app.switch_screen('hello')

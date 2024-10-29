@@ -1,0 +1,27 @@
+<LoginScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 20
+        pos_hint: {"center_x": 0.5, "center_y": 0.4}
+        size_hint: (None, None)
+        size: (300, 200)
+
+        MDTextField:
+            id: username
+            hint_text: "Username"
+            icon_right: "account"
+            size_hint_x: 1
+            
+
+        MDTextField:
+            id: password
+            hint_text: "Password"
+            password: True
+            icon_right: "eye-off"
+            size_hint_x: 1
+
+        MDRectangleFlatButton:
+            text: "Login"
+            pos_hint: {"center_x": 0.5}
+            on_release: root.login()
