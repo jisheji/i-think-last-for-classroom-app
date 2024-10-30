@@ -3,6 +3,7 @@ from kivymd.uix.screen import MDScreen
 from datetime import datetime, timedelta
 from kivy.metrics import dp
 from calendar import day_name
+from kivy.lang import Builder
 from kivymd.uix.label import MDLabel
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.dialog import MDDialog
@@ -13,6 +14,7 @@ from kivymd.uix.pickers import MDDatePicker, MDTimePicker
 from kivy.uix.scrollview import ScrollView
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.card import MDCard
+from kivymd.uix.snackbar import Snackbar
 
 class HelloScreen(MDScreen):
     def __init__(self, **kwargs):
@@ -244,27 +246,20 @@ class HelloScreen(MDScreen):
 
         self.ids.schedule_box.clear_widgets()
         
-        # Sort schedules by time
-        schedules.sort(key=lambda x: datetime.strptime(x['time'], '%H:%M:%S'))
+        # Sort schedules by time, ignoring empty time fields
+        schedules.sort(key=lambda x: datetime.strptime(x['time'], '%H:%M:%S') if x['time'] else datetime.min)
 
         for schedule in schedules:
-            schedule_layout = MDCard(orientation='horizontal', padding=dp(10), size_hint_y=None, height=dp(60), md_bg_color=(0.9, 0.9, 0.9, 1) )
+            schedule_layout = MDCard(orientation='horizontal', padding=dp(10), size_hint_y=None, height=dp(60), md_bg_color=(0.9, 0.9, 0.9, 1))
             
             time_label = MDLabel(
-                text=datetime.strptime(schedule['time'], '%H:%M:%S').strftime('%H:%M'),
+                text=datetime.strptime(schedule['time'], '%H:%M:%S').strftime('%H:%M') if schedule['time'] else '',
                 halign='left',
                 theme_text_color='Primary',
                 size_hint=(None, None),
                 size=(dp(60), dp(40)),
                 font_style='H6',
-                font_size='12sp'
-            )
-
-            clock_icon = MDIconButton(
-                icon='clipboard-clock',
-                size_hint=(None, None),
-                size=(dp(24), dp(24)),
-                theme_text_color='Primary'
+                font_size='12sp'  # Reduced font size
             )
 
             title_label = MDLabel(
@@ -272,9 +267,9 @@ class HelloScreen(MDScreen):
                 halign='left',
                 theme_text_color='Primary',
                 size_hint=(None, None),
-                size=(dp(100), dp(40)),
+                size=(dp(60), dp(40)),
                 font_style='H6',
-                font_size='12sp'
+                font_size='12sp'  # Reduced font size
             )
 
             description_label = MDLabel(
@@ -282,17 +277,44 @@ class HelloScreen(MDScreen):
                 halign='left',
                 theme_text_color='Secondary',
                 size_hint=(None, None),
-                size=(dp(200), dp(40)),
+                size=(dp(160), dp(40)),
                 font_style='Caption',
-                font_size='12sp'
+                font_size='10sp'  # Reduced font size
             )
 
-            schedule_layout.add_widget(clock_icon)
+            delete_button = MDIconButton(
+                icon='delete',
+                size_hint=(None, None),
+                size=(dp(24), dp(24)),
+                theme_text_color='Error',
+                on_release=lambda x, s=schedule: self.delete_schedule(date_str, s)
+            )
+
             schedule_layout.add_widget(time_label)
             schedule_layout.add_widget(title_label)
             schedule_layout.add_widget(description_label)
+            schedule_layout.add_widget(delete_button)
 
             self.ids.schedule_box.add_widget(schedule_layout)
+
+    from kivymd.uix.dialog import MDDialog
+
+    def delete_schedule(self, date_str, schedule):
+        self.schedules[date_str].remove(schedule)
+        self.save_schedules()
+        self.show_schedules_for_day(self.current_date)
+        
+        # Create and show the dialog
+        self.dialog = MDDialog(
+            text="Schedule deleted",
+            buttons=[
+                MDFlatButton(
+                    text="OK",
+                    on_release=lambda x: self.dialog.dismiss()
+                )
+            ]
+        )
+        self.dialog.open()
 
     def load_schedules(self):
         try:
