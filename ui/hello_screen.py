@@ -11,6 +11,8 @@ from kivymd.uix.button import MDFlatButton, MDRaisedButton
 from kivy.graphics import Color, RoundedRectangle
 from kivymd.uix.pickers import MDDatePicker, MDTimePicker
 from kivy.uix.scrollview import ScrollView
+from kivymd.uix.button import MDIconButton
+from kivymd.uix.card import MDCard
 
 class HelloScreen(MDScreen):
     def __init__(self, **kwargs):
@@ -47,9 +49,9 @@ class HelloScreen(MDScreen):
         self.ids.calendar_bar.clear_widgets()
         self.display_week(self.current_date)
 
-    def display_week(self, center_date = datetime.now()):
+    def display_week(self, center_date=datetime.now()):
         now = center_date
-        day_width = self.width / 7
+        day_width = self.width / 10
         
         temp_layout = MDBoxLayout(orientation='horizontal', spacing=dp(10), padding=[dp(10), dp(20), dp(10), dp(10)])
 
@@ -83,19 +85,19 @@ class HelloScreen(MDScreen):
             if date.date() == datetime.now().date():
                 with day_box.canvas.before:
                     Color(1, 69/255.0, 76/255.0, 1)  # Highlight color with red for the day of today
-                    self.rect = RoundedRectangle(size=(day_box.width + dp(20), day_box.height + dp(20)),
-                                                pos=(day_box.x - dp(10), day_box.y - dp(10)),
-                                                radius=[(10, 10), (10, 10), (10, 10), (10, 10)])
-                    day_box.bind(size=self.update_rect, pos=self.update_rect)
+                    self.today_rect = RoundedRectangle(size=(day_box.width + dp(20), day_box.height + dp(20)),
+                                                       pos=(day_box.x - dp(10), day_box.y - dp(10)),
+                                                       radius=[(10, 10), (10, 10), (10, 10), (10, 10)])
+                    day_box.bind(size=self.update_today_rect, pos=self.update_today_rect)
 
             # Highlight the selected date with pastel blue
             if date.date() == self.current_date.date() and date.date() != datetime.now().date():
                 with day_box.canvas.before:
                     Color(0.68, 0.85, 0.90, 1)  # Pastel blue color
-                    self.rect = RoundedRectangle(size=(day_box.width + dp(20), day_box.height + dp(20)),
-                                                pos=(day_box.x - dp(10), day_box.y - dp(10)),
-                                                radius=[(10, 10), (10, 10), (10, 10), (10, 10)])
-                    day_box.bind(size=self.update_rect, pos=self.update_rect)
+                    self.selected_date_rect = RoundedRectangle(size=(day_box.width + dp(20), day_box.height + dp(20)),
+                                                               pos=(day_box.x - dp(10), day_box.y - dp(10)),
+                                                               radius=[(10, 10), (10, 10), (10, 10), (10, 10)])
+                    day_box.bind(size=self.update_selected_date_rect, pos=self.update_selected_date_rect)
 
             day_box.bind(on_touch_down=lambda instance, touch, date=date: self.on_day_selected(instance, touch, date=date))
 
@@ -110,16 +112,22 @@ class HelloScreen(MDScreen):
             self.populate_calendar_bar()
             self.show_schedules_for_day(date)
 
-    def update_rect(self, instance, _):
-        self.rect.pos = (instance.x - dp(5), instance.y - dp(5))
-        self.rect.size = (instance.width + dp(10), instance.height + dp(10))
+    def update_today_rect(self, instance, _):
+        if self.today_rect:
+            self.today_rect.pos = (instance.x - dp(10), instance.y - dp(10))
+            self.today_rect.size = (instance.width + dp(20), instance.height + dp(20))
+
+    def update_selected_date_rect(self, instance, _):
+        if self.selected_date_rect:
+            self.selected_date_rect.pos = (instance.x - dp(10), instance.y - dp(10))
+            self.selected_date_rect.size = (instance.width + dp(20), instance.height + dp(20))
 
     def show_add_schedule_dialog(self):
         layout = MDBoxLayout(
             orientation="vertical",
-            spacing="10dp",
+            spacing="15dp",
             size_hint_y=None,
-            height="250dp"
+            height="400dp"
         )
 
         self.schedule_title = MDTextField(
@@ -133,35 +141,12 @@ class HelloScreen(MDScreen):
             height="40dp"
         )
 
-        date_layout = MDBoxLayout(
-            orientation="horizontal",
-            spacing="10dp",
-            size_hint_y=None,
-            height="40dp"
-        )
-
-        self.schedule_day = MDTextField(
-            hint_text="DD",
+        self.schedule_date = MDTextField(
+            hint_text="Select schedule date",
             size_hint_y=None,
             height="40dp",
-            input_filter='int'
+            readonly=True,
         )
-        self.schedule_month = MDTextField(
-            hint_text="MM",
-            size_hint_y=None,
-            height="40dp",
-            input_filter='int'
-        )
-        self.schedule_year = MDTextField(
-            hint_text="YYYY",
-            size_hint_y=None,
-            height="40dp",
-            input_filter='int'
-        )
-
-        date_layout.add_widget(self.schedule_day)
-        date_layout.add_widget(self.schedule_month)
-        date_layout.add_widget(self.schedule_year)
 
         self.schedule_time = MDTextField(
             hint_text="Select schedule time",
@@ -169,12 +154,27 @@ class HelloScreen(MDScreen):
             height="40dp",
             readonly=True,
         )
-        self.schedule_time.bind(on_focus=self.show_time_picker)
+
+        date_button = MDRaisedButton(
+            text="Pick Date",
+            size_hint_y=None,
+            height="40dp",
+            on_release=self.show_date_picker
+        )
+
+        time_button = MDRaisedButton(
+            text="Pick Time",
+            size_hint_y=None,
+            height="40dp",
+            on_release=self.show_time_picker
+        )
 
         layout.add_widget(self.schedule_title)
         layout.add_widget(self.schedule_description)
-        layout.add_widget(date_layout)
+        layout.add_widget(self.schedule_date)
+        layout.add_widget(date_button)
         layout.add_widget(self.schedule_time)
+        layout.add_widget(time_button)
 
         self.dialog = MDDialog(
             title="Add Schedule",
@@ -197,18 +197,8 @@ class HelloScreen(MDScreen):
     def add_schedule(self, *_):
         title = self.schedule_title.text
         description = self.schedule_description.text
-        day = self.schedule_day.text
-        month = self.schedule_month.text
-        year = self.schedule_year.text
+        date = self.schedule_date.text
         time = self.schedule_time.text
-
-        try:
-            date = datetime.strptime(f"{day}/{month}/{year}", '%d/%m/%Y').strftime('%d/%m/%Y')
-        except ValueError:
-            # Handle invalid date input
-            self.ids.schedule_box.clear_widgets()
-            self.ids.schedule_box.add_widget(MDLabel(text="Invalid date entered.", halign='center'))
-            return
 
         if date not in self.schedules:
             self.schedules[date] = []
@@ -225,27 +215,23 @@ class HelloScreen(MDScreen):
         self.populate_calendar_bar()  # Refresh the calendar to show the new schedule
 
     def close_dialog(self, *_):
-            self.dialog.dismiss()
+        self.dialog.dismiss()
 
-    def show_date_picker(self, instance, _):
-            if instance.focus:
-                instance.focus = False
-                date_dialog = MDDatePicker()
-                date_dialog.bind(on_save=self.on_date_selected)
-                date_dialog.open()
+    def show_date_picker(self, *args):
+        date_dialog = MDDatePicker()
+        date_dialog.bind(on_save=self.on_date_selected)
+        date_dialog.open()
 
-    def on_date_selected(self, _, value, __):
-            self.schedule_date.text = value.strftime('%d/%m/%Y')
+    def on_date_selected(self, instance, value, date_range):
+        self.schedule_date.text = value.strftime('%d/%m/%Y')
 
-    def show_time_picker(self, instance, _):
-            if instance.focus:
-                instance.focus = False
-                time_dialog = MDTimePicker()
-                time_dialog.bind(time=self.on_time_selected)
-                time_dialog.open()
+    def show_time_picker(self, *args):
+        time_dialog = MDTimePicker()
+        time_dialog.bind(time=self.on_time_selected)
+        time_dialog.open()
 
-    def on_time_selected(self, _, time):
-            self.schedule_time.text = str(time)
+    def on_time_selected(self, instance, time):
+        self.schedule_time.text = str(time)
 
     def show_schedules_for_day(self, date):
         date_str = date.strftime('%d/%m/%Y')
@@ -257,8 +243,56 @@ class HelloScreen(MDScreen):
             return
 
         self.ids.schedule_box.clear_widgets()
+        
+        # Sort schedules by time
+        schedules.sort(key=lambda x: datetime.strptime(x['time'], '%H:%M:%S'))
+
         for schedule in schedules:
-            self.ids.schedule_box.add_widget(MDLabel(text=f"{schedule['time']} - {schedule['title']}: {schedule['description']}", halign='left'))
+            schedule_layout = MDCard(orientation='horizontal', padding=dp(10), size_hint_y=None, height=dp(60), md_bg_color=(0.9, 0.9, 0.9, 1) )
+            
+            time_label = MDLabel(
+                text=datetime.strptime(schedule['time'], '%H:%M:%S').strftime('%H:%M'),
+                halign='left',
+                theme_text_color='Primary',
+                size_hint=(None, None),
+                size=(dp(60), dp(40)),
+                font_style='H6',
+                font_size='12sp'
+            )
+
+            clock_icon = MDIconButton(
+                icon='clipboard-clock',
+                size_hint=(None, None),
+                size=(dp(24), dp(24)),
+                theme_text_color='Primary'
+            )
+
+            title_label = MDLabel(
+                text=schedule['title'],
+                halign='left',
+                theme_text_color='Primary',
+                size_hint=(None, None),
+                size=(dp(100), dp(40)),
+                font_style='H6',
+                font_size='12sp'
+            )
+
+            description_label = MDLabel(
+                text=schedule['description'],
+                halign='left',
+                theme_text_color='Secondary',
+                size_hint=(None, None),
+                size=(dp(200), dp(40)),
+                font_style='Caption',
+                font_size='12sp'
+            )
+
+            schedule_layout.add_widget(clock_icon)
+            schedule_layout.add_widget(time_label)
+            schedule_layout.add_widget(title_label)
+            schedule_layout.add_widget(description_label)
+
+            self.ids.schedule_box.add_widget(schedule_layout)
 
     def load_schedules(self):
         try:
