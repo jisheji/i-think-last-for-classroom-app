@@ -252,14 +252,20 @@ class HelloScreen(MDScreen):
         for schedule in schedules:
             schedule_layout = MDCard(orientation='horizontal', padding=dp(10), size_hint_y=None, height=dp(60), md_bg_color=(0.9, 0.9, 0.9, 1))
             
+            clock_icon = MDIconButton(
+                icon='calendar-clock',
+                size_hint=(None, None),
+                size=(dp(24), dp(24)),
+                theme_text_color='Primary'
+            )
             time_label = MDLabel(
                 text=datetime.strptime(schedule['time'], '%H:%M:%S').strftime('%H:%M') if schedule['time'] else '',
                 halign='left',
                 theme_text_color='Primary',
                 size_hint=(None, None),
-                size=(dp(60), dp(40)),
+                size=(dp(57), dp(40)),
                 font_style='H6',
-                font_size='12sp'  # Reduced font size
+                font_size='10sp'  # Reduced font size
             )
 
             title_label = MDLabel(
@@ -269,7 +275,7 @@ class HelloScreen(MDScreen):
                 size_hint=(None, None),
                 size=(dp(60), dp(40)),
                 font_style='H6',
-                font_size='12sp'  # Reduced font size
+                font_size='10sp'  # Reduced font size
             )
 
             description_label = MDLabel(
@@ -277,7 +283,7 @@ class HelloScreen(MDScreen):
                 halign='left',
                 theme_text_color='Secondary',
                 size_hint=(None, None),
-                size=(dp(160), dp(40)),
+                size=(dp(135), dp(40)),
                 font_style='Caption',
                 font_size='10sp'  # Reduced font size
             )
@@ -289,7 +295,7 @@ class HelloScreen(MDScreen):
                 theme_text_color='Error',
                 on_release=lambda x, s=schedule: self.delete_schedule(date_str, s)
             )
-
+            schedule_layout.add_widget(clock_icon)
             schedule_layout.add_widget(time_label)
             schedule_layout.add_widget(title_label)
             schedule_layout.add_widget(description_label)

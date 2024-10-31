@@ -63,6 +63,7 @@
                                     height: dp(80)
                                     width: self.minimum_width
 
+                        
                         MDBoxLayout:
                             id: navigation_buttons
                             orientation: 'horizontal'
@@ -74,7 +75,18 @@
                             id: schedule_box
                             orientation: 'vertical'
                             size_hint_y: None
-                            height: dp(200)
+                            height: dp(450)
+
+                        AnchorLayout:
+                            anchor_x: 'right'
+                            anchor_y: 'bottom'
+                            Image:
+                                source: 'DSEBApp-master\photo\photo6.png'
+                                size_hint: None, None
+                                size: dp(150), dp(150)  # Adjust the size as needed
+                                allow_stretch: True
+                                keep_ratio: True
+
 
                         AnchorLayout:
                             anchor_x: 'center'
@@ -89,6 +101,7 @@
                             icon: 'arrow-back'
                             on_press: app.switch_screen('login')
 
+                        
         MDNavigationDrawer:
             id: nav_drawer
             anchor: 'right'
@@ -98,71 +111,97 @@
                 padding: dp(8)
                 spacing: dp(8)
             
-            Image:
-                source: 'DSEBApp-master/photo/pic1-of-menu.jpg'
-                size_hint_y: None
-                height: dp(150)  # Adjust the height as needed
-                allow_stretch: True
-                pos_hint: {'center_y': 0.95}
-                keep_ratio: True
-            
-            BoxLayout:
-                orientation: 'vertical'
-                spacing: dp(10)
-                padding: dp(10)
-
-                MDCard:
+                Image:
+                    source: 'DSEBApp-master\photo\photo3.png'
                     size_hint_y: None
-                    height: dp(48)
-                    padding: dp(8)
-                    md_bg_color: app.theme_cls.primary_light  # Background color for the button
-                    pos_hint: {'center_y': 0.85}
-                    MDFlatButton:
-                        on_release: app.switch_screen('account')
-                        text: 'Account'
-                        icon: 'account'
-                        size_hint_y: None
-                        theme_text_color: 'Primary'
-                        halign: 'left'
-
-                MDCard:
+                    height: dp(150)  # Adjust the height as needed
+                    allow_stretch: True
+                    keep_ratio: True
+                
+                Image:
+                    source: 'DSEBApp-master\photo\photo4.png'
                     size_hint_y: None
-                    height: dp(48)
-                    padding: dp(8)
-                    md_bg_color: app.theme_cls.primary_light  # Background color for the button
-                    pos_hint: {'center_y': 0.75}
-                    MDFlatButton:
-                        on_release: app.switch_screen('deadlines')
-                        text: 'Deadlines'
-                        icon: 'calendar'
-                        size_hint_y: None
-                        theme_text_color: 'Primary'
-                        halign: 'left'
-
-                MDCard:
+                    height: dp(150)  # Adjust the height as needed
+                    allow_stretch: True
+                    keep_ratio: True
+                
+                Image:
+                    source: 'DSEBApp-master\photo\photo5.png'
                     size_hint_y: None
-                    height: dp(48)
-                    padding: dp(8)
-                    md_bg_color: app.theme_cls.primary_light  # Background color for the button
-                    pos_hint: {'center_y': 0.65}
-                    MDFlatButton:
-                        on_release: app.switch_screen('feature3')
-                        text: 'Feature 3'
-                        icon: 'star'
-                        size_hint_y: None
-                        theme_text_color: 'Primary'
-                        halign: 'left'
+                    height: dp(150)  # Adjust the height as needed
+                    allow_stretch: True
+                    keep_ratio: True
+                
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: dp(10)
+                    padding: dp(10)
 
-                MDCard:
-                    size_hint_y: None
-                    height: dp(48)
-                    padding: dp(8)
-                    md_bg_color: app.theme_cls.primary_light  # Background color for the button
-                    pos_hint: {'center_y': 0.55}
-                    MDFlatButton:
-                        on_release: app.switch_screen('feature4')
-                        text: 'Feature 4'
-                        icon: 'star-outline'
+                    MDCard:
                         size_hint_y: None
-                        theme_text_color: 'Primary'
-                        halign: 'left'
+                        height: dp(48)
+                        padding: dp(8)
+                        md_bg_color: app.theme_cls.primary_light  # Background color for the button
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            MDIcon:
+                                icon: 'account'
+                                theme_text_color: 'Primary'
+                            MDFlatButton:
+                                on_release: app.switch_screen('account')
+                                text: 'Account'
+                                size_hint_y: None
+                                theme_text_color: 'Primary'
+                                halign: 'left'
+
+                    MDCard:
+                        size_hint_y: None
+                        height: dp(48)
+                        padding: dp(8)
+                        md_bg_color: app.theme_cls.primary_light  # Background color for the button
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            MDIcon:
+                                icon: 'calendar'
+                                theme_text_color: 'Primary'
+                            MDFlatButton:
+                                on_release: app.switch_screen('deadlines')
+                                text: 'Deadlines'
+                                size_hint_y: None
+                                theme_text_color: 'Primary'
+                                halign: 'left'
+
+
+                    MDCard:
+                        size_hint_y: None
+                        height: dp(48)
+                        padding: dp(8)
+                        md_bg_color: app.theme_cls.primary_light  # Background color for the button
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            MDIcon:
+                                icon: 'star'
+                                theme_text_color: 'Primary'
+                            MDFlatButton:
+                                on_release: app.switch_screen('feature3')
+                                text: 'Feature 3'
+                                size_hint_y: None
+                                theme_text_color: 'Primary'
+                                halign: 'left'
+
+                    MDCard:
+                        size_hint_y: None
+                        height: dp(48)
+                        padding: dp(8)
+                        md_bg_color: app.theme_cls.primary_light  # Background color for the button
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            MDIcon:
+                                icon: 'star-outline'
+                                theme_text_color: 'Primary'
+                            MDFlatButton:
+                                on_release: app.switch_screen('feature4')
+                                text: 'Feature 4'
+                                size_hint_y: None
+                                theme_text_color: 'Primary'
+                                halign: 'left'
