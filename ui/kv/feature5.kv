@@ -1,42 +1,32 @@
 <Feature5_Screen>:
     MDFloatLayout:
         md_bg_color: .89, .89, .89, 0
-        MDRaisedButton:
-            text: "Go back"
-            md_bg_color: 0, 102/255, 102/255, 1  # Set the button background color
-            text_color: 1, 1, 1, 1  # Set the text color to white
+
+        MDIcon:
+            icon: "location"
             size_hint: None, None
-            size: 200, 50
-            pos_hint: {"x": 0, "top": 1}  # Align button to the top-left corner
-            on_release: app.switch_screen('hello')
-        Image:
-            source: "location.png"
-            size_hint: None, None
-            size: 10, 10
-            allow_stretch: True
-            keep_ratio: True
+            size: dp(10), dp(10)
             pos_hint: {"center_x": .5, "center_y": .95}
+
         MDLabel:
             id: location
             text: ""
             pos_hint: {"center_x": .5, "center_y": .89}
             halign: "center"
             font_size: "20sp"
-        Image:
-            id: weather_image
-            source: "sunny.png"  
-            size_hint: None, None
-            size: 100, 100
-            allow_stretch: True
-            keep_ratio: True
+
+        MDIcon:
+            id: weather_icon
+            icon: "weather-sunny"  # Default icon
+            font_size: "80sp"
             pos_hint: {"center_x": .5, "center_y": .77}
 
         MDLabel:
             id: date_label
             text: ""
             font_size: '13sp'
-            pos_hint: {"center_x": 0.5, "top": 0.85}  # Adjusted for centering
-            halign: "center"
+            pos_hint: {"center_x": 0.9, "center_y": 0.85}
+
         MDLabel:
             id: temperature
             text: ""
@@ -44,50 +34,56 @@
             pos_hint: {"center_x": .5, "center_y": .62}
             halign: "center"
             font_size: "60sp"
+
         MDLabel:
             id: weather
             text: ""
             pos_hint: {"center_x": .5, "center_y": .54}
             halign: "center"
             font_size: "15sp"
+
         MDFloatLayout:
             pos_hint: {"center_x": .25, "center_y": .4}
             size_hint: .22, .1
-            Image:
-                source: "weather_icons/humidity.png"
+
+            MDIcon:
+                icon: "water-percent"
                 pos_hint: {"center_x": .1, "center_y": .5}
                 size_hint: None, None
-                size: 80, 80
-                allow_stretch: True
-                keep_ratio: True
+                size: dp(80), dp(80)
+
             MDLabel:
                 id: humidity
                 text: ""
                 pos_hint: {"center_x": 1, "center_y": .7}
                 font_size: "18sp"
+
             MDLabel:
                 text: "Humidity"
                 pos_hint: {"center_x": 1, "center_y": .3}
                 font_size: "14sp"
+
         MDFloatLayout:
             pos_hint: {"center_x": .7, "center_y": .4}
             size_hint: .22, .1
-            Image:
-                source: "weather_icons/wind.png"
+
+            MDIcon:
+                icon: "weather-windy"
                 pos_hint: {"center_x": .1, "center_y": .5}
                 size_hint: None, None
-                size: 80, 80
-                allow_stretch: True
-                keep_ratio: True
+                size: dp(80), dp(80)
+
             MDLabel:
                 id: wind_speed
                 text: ""
                 pos_hint: {"center_x": 1.1, "center_y": .7}
                 font_size: "16sp"
+
             MDLabel:
                 text: "Wind"
                 pos_hint: {"center_x": 1.1, "center_y": .3}
                 font_size: "14sp"
+
         MDFloatLayout:
             size_hint_y: .3
             canvas:
@@ -97,6 +93,7 @@
                     size: self.size
                     pos: self.pos
                     radius: [10, 10, 0, 0]
+
             MDFloatLayout:
                 pos_hint: {"center_x": .5, "center_y": .71}
                 size_hint: .9, .32
@@ -107,6 +104,7 @@
                         size: self.size
                         pos: self.pos
                         radius: [10]
+
                 TextInput:
                     id: city_name
                     hint_text: "Enter City Name"
@@ -121,6 +119,7 @@
                     padding: 15
                     cursor_color: 1, 1, 1, 1
                     cursor_width: "2sp"
+
             Button:
                 text: "Get Weather"
                 font_size: "20sp"
