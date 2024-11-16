@@ -1,0 +1,139 @@
+<Feature5_Screen>:
+    MDFloatLayout:
+        md_bg_color: .89, .89, .89, 0
+        MDRaisedButton:
+            text: "Go back"
+            md_bg_color: 0, 102/255, 102/255, 1  # Set the button background color
+            text_color: 1, 1, 1, 1  # Set the text color to white
+            size_hint: None, None
+            size: 200, 50
+            pos_hint: {"x": 0, "top": 1}  # Align button to the top-left corner
+            on_release: app.switch_screen('hello')
+        Image:
+            source: "location.png"
+            size_hint: None, None
+            size: 10, 10
+            allow_stretch: True
+            keep_ratio: True
+            pos_hint: {"center_x": .5, "center_y": .95}
+        MDLabel:
+            id: location
+            text: ""
+            pos_hint: {"center_x": .5, "center_y": .89}
+            halign: "center"
+            font_size: "20sp"
+        Image:
+            id: weather_image
+            source: "sunny.png"  
+            size_hint: None, None
+            size: 100, 100
+            allow_stretch: True
+            keep_ratio: True
+            pos_hint: {"center_x": .5, "center_y": .77}
+
+        MDLabel:
+            id: date_label
+            text: ""
+            font_size: '13sp'
+            pos_hint: {"center_x": 0.5, "top": 0.85}  # Adjusted for centering
+            halign: "center"
+        MDLabel:
+            id: temperature
+            text: ""
+            markup: True
+            pos_hint: {"center_x": .5, "center_y": .62}
+            halign: "center"
+            font_size: "60sp"
+        MDLabel:
+            id: weather
+            text: ""
+            pos_hint: {"center_x": .5, "center_y": .54}
+            halign: "center"
+            font_size: "15sp"
+        MDFloatLayout:
+            pos_hint: {"center_x": .25, "center_y": .4}
+            size_hint: .22, .1
+            Image:
+                source: "weather_icons/humidity.png"
+                pos_hint: {"center_x": .1, "center_y": .5}
+                size_hint: None, None
+                size: 80, 80
+                allow_stretch: True
+                keep_ratio: True
+            MDLabel:
+                id: humidity
+                text: ""
+                pos_hint: {"center_x": 1, "center_y": .7}
+                font_size: "18sp"
+            MDLabel:
+                text: "Humidity"
+                pos_hint: {"center_x": 1, "center_y": .3}
+                font_size: "14sp"
+        MDFloatLayout:
+            pos_hint: {"center_x": .7, "center_y": .4}
+            size_hint: .22, .1
+            Image:
+                source: "weather_icons/wind.png"
+                pos_hint: {"center_x": .1, "center_y": .5}
+                size_hint: None, None
+                size: 80, 80
+                allow_stretch: True
+                keep_ratio: True
+            MDLabel:
+                id: wind_speed
+                text: ""
+                pos_hint: {"center_x": 1.1, "center_y": .7}
+                font_size: "16sp"
+            MDLabel:
+                text: "Wind"
+                pos_hint: {"center_x": 1.1, "center_y": .3}
+                font_size: "14sp"
+        MDFloatLayout:
+            size_hint_y: .3
+            canvas:
+                Color:
+                    rgb: rgba(0, 128, 128)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [10, 10, 0, 0]
+            MDFloatLayout:
+                pos_hint: {"center_x": .5, "center_y": .71}
+                size_hint: .9, .32
+                canvas:
+                    Color:
+                        rgb: rgba(0, 102, 102)
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [10]
+                TextInput:
+                    id: city_name
+                    hint_text: "Enter City Name"
+                    size_hint: 1, None
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    height: self.minimum_height
+                    multiline: False
+                    font_size: "20sp"
+                    hint_text_color: 1, 1, 1, 1
+                    foreground_color: 1, 1, 1, 1
+                    background_color: 1, 1, 1, 0
+                    padding: 15
+                    cursor_color: 1, 1, 1, 1
+                    cursor_width: "2sp"
+            Button:
+                text: "Get Weather"
+                font_size: "20sp"
+                size_hint: .9, .32
+                pos_hint: {"center_x": .5, "center_y": .29}
+                background_color: 1, 1, 1, 0
+                color: rgba(148, 117, 255, 255)
+                on_release: root.search_weather()
+                canvas.before:
+                    Color:
+                        rgb: 1, 1, 1, 1
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [10]
+        
