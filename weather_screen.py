@@ -5,7 +5,7 @@ from kivy.lang import Builder
 from kivy.core.window import Window
 from datetime import datetime
 
-class Feature5_Screen(MDScreen):
+class Weather_Screen(MDScreen):
     api_key = "fb5d71ff9a5e07ceca86d42c2d23e1be"
 
     def on_enter(self):
