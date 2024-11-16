@@ -54,26 +54,27 @@ class Feature5_Screen(MDScreen):
                 self.ids.wind_speed.text = f"{wind_speed} km/h"
                 self.ids.location.text = location
 
-                weather_image_path = ""
+                weather_icon_name = ""
                 if weather_id == 800:
-                    weather_image_path = "weather_icons/sunny.png"
+                    weather_icon_name = "weather-sunny"
                 elif 200 <= weather_id <= 232:
-                    weather_image_path = "weather_icons/stormy.png"
+                    weather_icon_name = "weather-lightning"
                 elif 300 <= weather_id <= 321 or 500 <= weather_id <= 531:
-                    weather_image_path = "weather_icons/rainy.png"
+                    weather_icon_name = "weather-rainy"
                 elif 600 <= weather_id <= 622:
-                    weather_image_path = "weather_icons/snowy.png"
+                    weather_icon_name = "weather-snowy"
                 elif 701 <= weather_id <= 781:
-                    weather_image_path = "weather_icons/foggy.png"
+                    weather_icon_name = "weather-fog"
                 elif 801 <= weather_id <= 804:
-                    weather_image_path = "weather_icons/cloudy.png"
+                    weather_icon_name = "weather-cloudy"
                 elif "cloud" in weather:
-                    weather_image_path = "weather_icons/cloudy.png"
+                    weather_icon_name = "weather-cloudy"
                 else:
-                    weather_image_path = "weather_icons/sunny.png"  # Ensure there is a valid default image
+                    weather_icon_name = "weather-sunny"  # Default icon
 
-                print(f"Setting weather image to: {weather_image_path}")
-                self.ids.weather_image.source = weather_image_path
+                print(f"Setting weather icon to: {weather_icon_name}")
+                self.ids.weather_icon.icon = weather_icon_name
+
             else:
                 print("City Not Found")
         except requests.ConnectionError:
